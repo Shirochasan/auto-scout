@@ -4,8 +4,8 @@ import com.autoscout.autoscout.AutoScout;
 import com.autoscout.autoscout.events.PlayerDeathEvent;
 import com.autoscout.autoscout.events.PlayerDisconnectEvent;
 import com.autoscout.autoscout.utils.Config;
-import com.autoscout.autoscout.utils.DiscordEmbed;
-import com.autoscout.autoscout.utils.DiscordWebhook;
+//import com.autoscout.autoscout.utils.DiscordEmbed;
+//import com.autoscout.autoscout.utils.DiscordWebhook;
 import com.autoscout.autoscout.utils.ElytraController;
 import com.autoscout.autoscout.utils.WorldScanner;
 import com.autoscout.autoscout.modules.AutoElytraRepair;
@@ -256,15 +256,15 @@ public class AutoScoutModule extends Module {
 
     @EventHandler
     private void onDisconnect(PlayerDisconnectEvent event) {
-        if (notifyOnDisconnect.get()) {
-            DiscordEmbed embed = new DiscordEmbed(
-                "Disconnected!",
-                "The client has been disconnected from the server.",
-                0xFF0000
-            );
-            DiscordWebhook.sendMessage("@everyone", embed);
-            info("Disconnected from server and notified to Discord");
-        }
+    //    if (notifyOnDisconnect.get()) {
+    //        DiscordEmbed embed = new DiscordEmbed(
+    //            "Disconnected!",
+    //            "The client has been disconnected from the server.",
+    //            0xFF0000
+    //        );
+    //        DiscordWebhook.sendMessage("@everyone", embed);
+    //        info("Disconnected from server and notified to Discord");
+    //    }
     }
 
     @EventHandler
@@ -301,12 +301,12 @@ if (ElytraController.isActive()) {
 
         if (elytraBrokenTicks > timeoutTicks) {
             // Send Discord notification
-            DiscordEmbed embed = new DiscordEmbed(
-                "Out of Elytras!",
-                "The bot has run out of elytras or all elytras are broken beyond repair, and will now disconnect.",
-                0xFF0000
-            );
-            DiscordWebhook.sendMessage("@everyone", embed);
+            //DiscordEmbed embed = new DiscordEmbed(
+            //    "Out of Elytras!",
+            //    "The bot has run out of elytras or all elytras are broken beyond repair, and will now disconnect.",
+            //    0xFF0000
+            // );
+            // DiscordWebhook.sendMessage("@everyone", embed);
 
             // Disconnect from server
             if (mc.getNetworkHandler() != null) {
@@ -343,26 +343,26 @@ if (ElytraController.isActive()) {
 
             // If health went from positive to 0, player died
             if (lastHealthCheck > 0 && currentHealth <= 0) {
-                DiscordEmbed embed = new DiscordEmbed(
-                    "Bot Died!",
-                    "Death location: " + mc.player.getBlockPos().toShortString() +
-                    "\nLast health: " + lastHealthCheck + " → 0",
-                    0xFF0000
-                );
-                DiscordWebhook.sendMessage("@everyone", embed);
-                info("Death detected and notified to Discord");
+                //DiscordEmbed embed = new DiscordEmbed(
+                //    "Bot Died!",
+                //    "Death location: " + mc.player.getBlockPos().toShortString() +
+                //    "\nLast health: " + lastHealthCheck + " → 0",
+                //    0xFF0000
+                // );
+                // DiscordWebhook.sendMessage("@everyone", embed);
+                // info("Death detected and notified to Discord");
             }
 
             // If we were at 0 health and now have health, we respawned
             if (lastHealthCheck <= 0 && currentHealth > 0) {
-                DiscordEmbed embed = new DiscordEmbed(
-                    "Bot Respawned",
-                    "Respawn location: " + mc.player.getBlockPos().toShortString() +
-                    "\nHealth restored: " + currentHealth,
-                    0x00FF00
-                );
-                DiscordWebhook.sendMessage("", embed);
-                info("Respawn detected and notified to Discord");
+                //DiscordEmbed embed = new DiscordEmbed(
+                //    "Bot Respawned",
+                //    "Respawn location: " + mc.player.getBlockPos().toShortString() +
+                //    "\nHealth restored: " + currentHealth,
+                //    0x00FF00
+                // );
+                // DiscordWebhook.sendMessage("", embed);
+                // info("Respawn detected and notified to Discord");
             }
 
             lastHealthCheck = (int)currentHealth;
@@ -384,14 +384,14 @@ if (ElytraController.isActive()) {
                     if (!reportedPlayers.containsKey(player) ||
                         System.currentTimeMillis() - reportedPlayers.get(player) > 300000) { // 5 minute cooldown
 
-                        DiscordEmbed embed = new DiscordEmbed(
-                            "Player Detected!",
-                            "Player: " + player.getName().getString() +
-                            "\nCoordinates: " + player.getBlockPos().toShortString() +
-                            "\nDistance: " + String.format("%.1f", mc.player.distanceTo(player)) + " blocks",
-                            0xFFFF00
-                        );
-                        DiscordWebhook.sendMessage("", embed);
+                        //DiscordEmbed embed = new DiscordEmbed(
+                        //    "Player Detected!",
+                        //    "Player: " + player.getName().getString() +
+                        //    "\nCoordinates: " + player.getBlockPos().toShortString() +
+                        //    "\nDistance: " + String.format("%.1f", mc.player.distanceTo(player)) + " blocks",
+                        //    0xFFFF00
+                        //;
+                        //DiscordWebhook.sendMessage("", embed);
                         reportedPlayers.put(player, System.currentTimeMillis());
                     }
                 }
@@ -411,15 +411,15 @@ if (ElytraController.isActive()) {
 
         // Check if ElytraController completed and send notification
         if (notifyOnCompletion.get() && ElytraController.justCompleted()) {
-            DiscordEmbed embed = new DiscordEmbed(
-                "Scanning Completed!",
-                "Auto Scout has finished scanning the designated area.\n" +
-                "Total waypoints completed: " + ElytraController.getTotalWaypoints() +
-                "\nFinal location: " + (mc.player != null ? mc.player.getBlockPos().toShortString() : "Unknown"),
-                0x0099FF
-            );
-            DiscordWebhook.sendMessage("@everyone", embed);
-            info("Scanning completion notified to Discord");
+            //DiscordEmbed embed = new DiscordEmbed(
+            //    "Scanning Completed!",
+            //    "Auto Scout has finished scanning the designated area.\n" +
+            //    "Total waypoints completed: " + ElytraController.getTotalWaypoints() +
+            //    "\nFinal location: " + (mc.player != null ? mc.player.getBlockPos().toShortString() : "Unknown"),
+            //    0x0099FF
+            //);
+            //DiscordWebhook.sendMessage("@everyone", embed);
+            //info("Scanning completion notified to Discord");
         }
     }
 
@@ -698,8 +698,8 @@ if (ElytraController.isActive()) {
             );
 
             String title = storageOnlyMode.get() ? "Stash Found!" : "Stash Found!";
-            DiscordEmbed embed = new DiscordEmbed(title, description, 0x00FF00);
-            DiscordWebhook.sendMessage("@everyone", embed);
+            //DiscordEmbed embed = new DiscordEmbed(title, description, 0x00FF00);
+            //DiscordWebhook.sendMessage("@everyone", embed);
 
             // Create a waypoint
             String waypointName = String.format("%d Blocks at %s", valuableBlocks.size(), coords);

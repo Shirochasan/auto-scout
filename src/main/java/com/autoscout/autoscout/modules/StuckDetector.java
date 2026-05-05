@@ -2,8 +2,8 @@ package com.autoscout.autoscout.modules;
 
 import com.autoscout.autoscout.AutoScout;
 import com.autoscout.autoscout.utils.Config;
-import com.autoscout.autoscout.utils.DiscordEmbed;
-import com.autoscout.autoscout.utils.DiscordWebhook;
+//import com.autoscout.autoscout.utils.DiscordEmbed;
+//import com.autoscout.autoscout.utils.DiscordWebhook;
 import com.autoscout.autoscout.utils.KeyHold;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
@@ -112,16 +112,16 @@ public class StuckDetector extends Module {
         info("Detected elytra rubber-banding at " + mc.player.getBlockPos().toShortString());
 
         // Send Discord notification
-        if (!discordWebhookUrl.get().isEmpty()) {
-            DiscordEmbed embed = new DiscordEmbed(
-                "Elytra Stuck Detected!",
-                "Player " + mc.player.getName().getString() + " is stuck in an elytra rubber-band loop at " +
-                mc.player.getBlockPos().toShortString() + ".\n" +
-                (autoFix.get() ? "Attempting to fix automatically." : "Manual intervention may be required."),
-                0xFF0000
-            );
-            new Thread(() -> DiscordWebhook.sendMessage("", embed)).start();
-        }
+        //if (!discordWebhookUrl.get().isEmpty()) {
+        //    DiscordEmbed embed = new DiscordEmbed(
+        //        "Elytra Stuck Detected!",
+        //        "Player " + mc.player.getName().getString() + " is stuck in an elytra rubber-band loop at " +
+        //        mc.player.getBlockPos().toShortString() + ".\n" +
+        //        (autoFix.get() ? "Attempting to fix automatically." : "Manual intervention may be required."),
+        //        0xFF0000
+        //    );
+        //    new Thread(() -> DiscordWebhook.sendMessage("", embed)).start();
+        //}
 
         if (autoFix.get()) {
             fixInProgress = true;
