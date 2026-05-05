@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.autoscout.autoscout.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "LivingEntityMixin",
+    "PlayerInventoryAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

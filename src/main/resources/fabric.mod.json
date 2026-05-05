@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "auto-scout",
+  "version": "${version}",
+  "name": "Auto-Scout",
+  "description": "A Meteor client addon for finding stashes on anarchy servers.",
+  "authors": [
+    "omtoi"
+  ],
+  "contact": {
+    "sources": "https://github.com/shirochasan/auto-scout"
+  },
+  "icon": "assets/template/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "com.autoscout.autoscout.AutoScout"
+    ]
+  },
+  "mixins": [
+    "auto-scout.mixins.json" 
+  ],
+  "custom": {
+    "meteor-client:color": "225,25,25"
+  },
+  "depends": {
+    "java": ">=21",
+    "minecraft": ">=1.21.4",
+    "meteor-client": "*",
+    "fabricloader": ">=0.15.11"
+  }
+}
