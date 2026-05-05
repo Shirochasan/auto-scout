@@ -5,7 +5,7 @@
   "name": "Auto-Scout",
   "description": "A Meteor client addon for finding stashes on anarchy servers.",
   "authors": [
-    "omtoi"
+    "Shirochasan"
   ],
   "contact": {
     "sources": "https://github.com/shirochasan/auto-scout"

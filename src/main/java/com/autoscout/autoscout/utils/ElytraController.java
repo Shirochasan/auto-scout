@@ -105,10 +105,12 @@ public class ElytraController {
         lastKnownGoodPosition = null;
         boundaryDirection = null;
 
+        /* 
         ElytraFly elytraFly = Modules.get().get(ElytraFly.class);
         if (elytraFly != null && elytraFly.isActive()) {
             elytraFly.toggle();
         }
+        */
 
         if (MeteorClient.mc.player != null) {
             MeteorClient.mc.player.sendMessage(
@@ -159,10 +161,12 @@ public class ElytraController {
                 return;
             }
 
+            /* 
             ElytraFly elytraFly = Modules.get().get(ElytraFly.class);
             if (elytraFly != null && !elytraFly.isActive()) {
                 elytraFly.toggle();
             }
+            */
 
             flyToNextWaypoint();
         }
@@ -219,7 +223,7 @@ public class ElytraController {
             navigationMode = NavigationMode.NORMAL;
             Logger.log("Reached target altitude, resuming normal navigation.");
         } else {
-            controlFlight(currentTarget);
+            //controlFlight(currentTarget);
         }
     }
 
@@ -251,7 +255,7 @@ public class ElytraController {
             switchToEdgeFollowing(boundaryInfo);
         } else {
             // Normal flight
-            controlFlight(target);
+            //controlFlight(target);
         }
     }
 
@@ -273,7 +277,7 @@ public class ElytraController {
         if (boundaryDirection != null) {
             Vec3d edgeTarget = playerPos.add(boundaryDirection.multiply(50)); // Look 50 blocks ahead along edge
             currentTarget = new Vec3d(edgeTarget.x, Config.flightAltitude, edgeTarget.z);
-            controlFlight(currentTarget);
+            //controlFlight(currentTarget);
 
             // Check if we can return to normal navigation
             ChunkBoundaryInfo boundaryInfo = checkForBoundaries(playerPos);
@@ -297,7 +301,7 @@ public class ElytraController {
         if (boundaryDirection != null) {
             Vec3d trailTarget = playerPos.add(boundaryDirection.multiply(50));
             currentTarget = new Vec3d(trailTarget.x, Config.flightAltitude, trailTarget.z);
-            controlFlight(currentTarget);
+            //controlFlight(currentTarget);
 
             // Continue following the trail of new chunks
             ChunkBoundaryInfo boundaryInfo = checkForBoundaries(playerPos);
@@ -568,60 +572,10 @@ public class ElytraController {
         }
     }
 
-    private static void controlFlight(Vec3d target) {
-        if (MeteorClient.mc.player == null) return;
-
-        Vec3d playerPos = MeteorClient.mc.player.getPos();
-        double dx = target.x - playerPos.x;
-        double dz = target.z - playerPos.z;
-        double horizontalDistance = Math.sqrt(dx * dx + dz * dz);
-
-        if (horizontalDistance > 1.0) {
-            double yaw = Math.atan2(dz, dx) * 180.0 / Math.PI - 90.0;
-            double dy = target.y - playerPos.y;
-            double pitch = Math.atan2(dy, horizontalDistance) * 180.0 / Math.PI;
-
-            pitch = Math.max(-30.0, Math.min(30.0, pitch));
-
-            if (MeteorClient.mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
-                pitch = Math.max(-15.0, Math.min(5.0, pitch));
-            }
-
-            float currentYaw = MeteorClient.mc.player.getYaw();
-            float currentPitch = MeteorClient.mc.player.getPitch();
-
-            float yawDiff = (float) (yaw - currentYaw);
-            while (yawDiff > 180) yawDiff -= 360;
-            while (yawDiff < -180) yawDiff += 360;
-
-            float newYaw = currentYaw + yawDiff * 0.1f;
-            float newPitch = currentPitch + ((float) pitch - currentPitch) * 0.1f;
-
-            MeteorClient.mc.player.setYaw(newYaw);
-            MeteorClient.mc.player.setPitch(newPitch);
-        }
-
-        if (MeteorClient.mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
-            boolean isGliding = MeteorClient.mc.player.isGliding();
-
-            if (isGliding) {
-                Vec3d forward = new Vec3d(
-                    -Math.sin(Math.toRadians(MeteorClient.mc.player.getYaw())),
-                    -Math.sin(Math.toRadians(MeteorClient.mc.player.getPitch())) * 0.3,
-                    Math.cos(Math.toRadians(MeteorClient.mc.player.getYaw()))
-                ).normalize().multiply(0.8);
-
-                MeteorClient.mc.player.setVelocity(forward);
-            } else {
-                if (MeteorClient.mc.player.getVelocity().y < -0.5 && !MeteorClient.mc.player.isOnGround()) {
-                    MeteorClient.mc.player.startGliding();
-                }
-            }
-        }
-    }
-
     private static void flyToNextWaypoint() {
         if (currentWaypoint >= waypoints.size()) {
+            // 全行程終了時はBaritoneも止める
+            MeteorClient.mc.player.networkHandler.sendChatMessage("#stop");
             stop();
             return;
         }
@@ -630,10 +584,14 @@ public class ElytraController {
         currentTarget = waypoint;
         lastWaypointTime = System.currentTimeMillis();
 
+        // Baritoneに次のWPを指示
         if (MeteorClient.mc.player != null) {
+            // エリトラ飛行を前提とした座標指定
+            String cmd = String.format("#elytra %d %d %d", (int)waypoint.x, (int)waypoint.y, (int)waypoint.z);
+            MeteorClient.mc.player.networkHandler.sendChatMessage(cmd);
+        
             MeteorClient.mc.player.sendMessage(
-                net.minecraft.text.Text.of("§bFlying to waypoint " + (currentWaypoint + 1) + "/" + waypoints.size() +
-                ": " + (int)waypoint.x + ", " + (int)waypoint.z), false);
+                net.minecraft.text.Text.of("§b[AutoScout] Sent to Baritone: " + cmd), false);
         }
 
         currentWaypoint++;

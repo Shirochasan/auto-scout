@@ -27,16 +27,17 @@ replay_pid*
 .gradle/
 build/
 
+# General
 .history/
 .idea/
 *.iml
 *.ipr
 *.iws
-
 memo.md
-
 .editorconfig/
-
 libs/
-
 .vscode/
+run/
+libs/
+bin/
+out/

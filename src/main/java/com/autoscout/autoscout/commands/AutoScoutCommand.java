@@ -15,7 +15,7 @@ import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class AutoScoutCommand extends Command {
     public AutoScoutCommand() {
-        super("AutoScout", "Controls the stash finding flight system.", "sh");
+        super("autoscout", "Controls the stash finding flight system.", "as", "scout");
     }
 
     @Override

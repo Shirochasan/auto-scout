@@ -357,7 +357,9 @@ public class AutoElytraRepair extends Module {
             // Ensure elytra engaged before positioning
             if (!mc.player.isGliding()) {
                 if (mc.player.isOnGround()) KeyHold.hold(mc.options.jumpKey, 4, null);
-                try { mc.player.startGliding(); } catch (Exception ignored) {}
+                try { 
+                    //mc.player.startGliding();
+                } catch (Exception ignored) {}
             }
 
             currentState = RepairState.POSITIONING_FOR_REPAIR;
@@ -387,7 +389,9 @@ public class AutoElytraRepair extends Module {
 
         // Keep gliding and pitch up to climb gently
         if (!mc.player.isGliding()) {
-            try { mc.player.startGliding(); } catch (Exception ignored) {}
+            try {
+                //mc.player.startGliding(); 
+            } catch (Exception ignored) {}
         }
         mc.player.setPitch(-20);
     }
